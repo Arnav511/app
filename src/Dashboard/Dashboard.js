@@ -81,13 +81,6 @@ export default function Dashboard() {
         setEditNote(false)
     }
 
-    // useEffect(() => {
-    //     if (editNote === true) {            
-    //         const val = document.getElementById('edit').value
-    //         console.log(val);
-    //     }
-    // }, [editNote, deleteNote])
-
     return (
         <>
             <Transition.Root show={open} as={Fragment}>
