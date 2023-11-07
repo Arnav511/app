@@ -1,14 +1,14 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Dashboard from '../Dashboard/Dashboard';
+import SignUp from './SignUp';
 
 export default function Login() {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [success, setSuccess] = useState(false);
-    const navigate = useNavigate();
+    const [signup, setSignup] = useState(false);
 
     const handleSubmit = (e) => {
 
@@ -24,16 +24,10 @@ export default function Login() {
         }
     }
 
-    // useEffect(() => {
-    //     if (success) {
-    //         console.log(success);
-    //         <Dashboard/>
-    //     }
-    // }, [success, navigate])
-
     return (
         <>
         {success && <Dashboard/>}
+        {signup && <SignUp/>}
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 h-screen ">
                 <img
                     src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&crop=focalpoint&fp-y=.8&w=2830&h=1500&q=80&blend=111827&sat=-100&exp=15&blend-mode=multiply"
@@ -70,11 +64,6 @@ export default function Login() {
                                 <label htmlFor="password" className="block text-sm font-medium leading-6 text-white">
                                     Password
                                 </label>
-                                <div className="text-sm">
-                                    <a href="/" className="font-semibold text-indigo-400 hover:text-indigo-300">
-                                        Forgot password?
-                                    </a>
-                                </div>
                             </div>
                             <div className="mt-2">
                                 <input
@@ -102,7 +91,7 @@ export default function Login() {
 
                     <p className="mt-10 text-center text-sm text-gray-500">
                         Don't have a account?{' '}
-                        <a href="/SignUp" className="font-semibold leading-6 text-indigo-400 hover:text-indigo-300">
+                        <a href="#0" onClick={() => setSignup(true)} className="font-semibold leading-6 text-indigo-400 hover:text-indigo-300">
                             Sign Up
                         </a>
                     </p>

@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import Dashboard from '../Dashboard/Dashboard';
+import Login from './Login';
 
 export default function SignUp() {
 
@@ -8,7 +9,7 @@ export default function SignUp() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [Cpassword, setCPassword] = useState("");
-    const navigate = useNavigate();
+    const [gotoLogin, setGoToLogin] = useState(false);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -33,15 +34,10 @@ export default function SignUp() {
         }
     }
 
-    useEffect(() => {
-        if (success) {
-            console.log(success);
-            navigate('/dashboard', { replace: true });
-        }
-    }, [success, navigate])
-
     return (
         <>
+            {success && <Dashboard />}
+            {gotoLogin && <Login />}
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 h-screen">
                 <img
                     src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&crop=focalpoint&fp-y=.8&w=2830&h=1500&q=80&blend=111827&sat=-100&exp=15&blend-mode=multiply"
@@ -123,7 +119,7 @@ export default function SignUp() {
 
                     <p className="mt-10 text-center text-sm text-gray-500">
                         Already have a account?{' '}
-                        <a href="/" className="font-semibold leading-6 text-indigo-400 hover:text-indigo-300">
+                        <a href="#0" onClick={() => setGoToLogin(true)} className="font-semibold leading-6 text-indigo-400 hover:text-indigo-300">
                             Login
                         </a>
                     </p>
