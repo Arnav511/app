@@ -1,19 +1,23 @@
 import React from 'react'
-import { useState, useEffect, useRef, Fragment } from 'react';
-import { PencilIcon, TrashIcon, ExclamationTriangleIcon, CheckIcon } from '@heroicons/react/20/solid'
+import { useState, useRef, Fragment, useEffect } from 'react';
+import { ExclamationTriangleIcon, CheckIcon } from '@heroicons/react/20/solid'
 import { Dialog, Transition } from '@headlessui/react';
 import NewListItem from './NewListItem';
 import CompletedListItem from './CompletedListItem';
 
-export default function Dashboard() {
+export default function Dashboard({ username }) {
 
     const [selected, setSelected] = useState("All")
 
 
     const [open, setOpen] = useState(false)
 
-    const [notes, setNotes] = useState([])
-    const [completednote, setCompletednote] = useState([])
+    const [notes, setNotes] = useState(
+        JSON.parse(localStorage.getItem(username + "IList")) || []
+    )
+    const [completednote, setCompletednote] = useState(
+        JSON.parse(localStorage.getItem(username + "CList")) || []
+    )
 
     const [confirm, setConfirm] = useState(false)
     const [Delete, setDelete] = useState(false)
@@ -48,7 +52,6 @@ export default function Dashboard() {
     const addNote = () => {
         const note = document.getElementById('about').value
         setNotes([...notes, note]);
-
         setOpen(false)
     }
 
@@ -80,6 +83,11 @@ export default function Dashboard() {
         setNotes([...notes, document.getElementById('edit').value])
         setEditNote(false)
     }
+
+    useEffect(() => {
+        localStorage.setItem(username + "IList", JSON.stringify(notes));
+        localStorage.setItem(username + "CList", JSON.stringify(completednote));
+    }, [notes, completednote, username])
 
     return (
         <>
