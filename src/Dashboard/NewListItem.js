@@ -1,7 +1,7 @@
 import React from 'react'
 import { PencilIcon, TrashIcon, CheckIcon } from '@heroicons/react/20/solid'
 
-export default function NewListItem({ note, complete, setDelete, KEY }) {
+export default function NewListItem({ note, complete, setDelete, KEY, openEditor }) {
 
     return (
         <div className='px-8 py-4 border-b border-white border-opacity-5 flex items-center'>
@@ -19,6 +19,8 @@ export default function NewListItem({ note, complete, setDelete, KEY }) {
                     <span className="hidden sm:block">
                         <button
                             type="button"
+                            id={"e"+KEY}
+                            onClick={openEditor}
                             className="inline-flex items-center rounded-md bg-slate-800 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-700"
                         >
                             <PencilIcon className="-ml-0.5 mr-1.5 h-5 w-5 text-white" aria-hidden="true" />

@@ -7,6 +7,9 @@ import CompletedListItem from './CompletedListItem';
 
 export default function Dashboard() {
 
+    const [selected, setSelected] = useState("All")
+
+
     const [open, setOpen] = useState(false)
 
     const [notes, setNotes] = useState([])
@@ -19,6 +22,9 @@ export default function Dashboard() {
 
     const [newNotekey, setNewNoteKey] = useState(0)
 
+    const [editNote, setEditNote] = useState(false)
+    const [deleteNote, setDeleteNote] = useState("")
+
     
     const complete = (e) => {
 
@@ -30,9 +36,17 @@ export default function Dashboard() {
         setConfirm(true);
     }
 
+    const openEditor = (e) => {
+        const id = e.target.id
+        const key = Number(id.slice(1))
+        const dnote = document.getElementById("note"+key).innerText
+        setDeleteNote(dnote)
+        setEditNote(true)
+    }
+
+
     const addNote = () => {
         const note = document.getElementById('about').value
-        console.log(note);
         setNotes([...notes, note]);
 
         setOpen(false)
@@ -60,6 +74,19 @@ export default function Dashboard() {
 
         setDelete(false)
     }
+
+    const EditNote = (e) => {
+        notes.splice(notes.indexOf(deleteNote), 1)
+        setNotes([...notes, document.getElementById('edit').value])
+        setEditNote(false)
+    }
+
+    // useEffect(() => {
+    //     if (editNote === true) {            
+    //         const val = document.getElementById('edit').value
+    //         console.log(val);
+    //     }
+    // }, [editNote, deleteNote])
 
     return (
         <>
@@ -117,6 +144,73 @@ export default function Dashboard() {
                                             type="button"
                                             className="mt-3 inline-flex w-full justify-center rounded-md bg-slate-800 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-700 sm:mt-0 sm:w-auto"
                                             onClick={() => setOpen(false)}
+                                            ref={cancelButtonRef}
+                                        >
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </Dialog.Panel>
+                            </Transition.Child>
+                        </div>
+                    </div>
+                </Dialog>
+            </Transition.Root>
+
+
+            <Transition.Root show={editNote} as={Fragment}>
+                <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setEditNote}>
+                    <Transition.Child
+                        as={Fragment}
+                        enter="ease-out duration-300"
+                        enterFrom="opacity-0"
+                        enterTo="opacity-100"
+                        leave="ease-in duration-200"
+                        leaveFrom="opacity-100"
+                        leaveTo="opacity-0"
+                    >
+                        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                    </Transition.Child>
+
+                    <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+                        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                            <Transition.Child
+                                as={Fragment}
+                                enter="ease-out duration-300"
+                                enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                                enterTo="opacity-100 translate-y-0 sm:scale-100"
+                                leave="ease-in duration-200"
+                                leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                                leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                            >
+                                <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                                    <div className="bg-slate-950 px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                        <div className="col-span-full">
+                                            <label htmlFor="edit" className="block text-sm font-medium leading-6 text-white">
+                                                Edit Note
+                                            </label>
+                                            <div className="mt-2">
+                                                <textarea
+                                                    id="edit"
+                                                    name="edit"
+                                                    rows={4}
+                                                    className="bg-slate-800 block w-full rounded-md border-0 py-1.5 text-white shadow-sm ring-1 ring-inset ring-transparent placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-white sm:text-sm sm:leading-6"
+                                                    defaultValue={deleteNote}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="bg-slate-900 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                                        <button
+                                            type="button"
+                                            className="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
+                                            onClick={EditNote}
+                                        >
+                                            Confirm
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="mt-3 inline-flex w-full justify-center rounded-md bg-slate-800 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-700 sm:mt-0 sm:w-auto"
+                                            onClick={() => setEditNote(false)}
                                             ref={cancelButtonRef}
                                         >
                                             Cancel
@@ -265,12 +359,11 @@ export default function Dashboard() {
                 </Dialog>
             </Transition.Root>
 
-
             <div>
                 <div className='flex flex-1 flex-col w-72 bg-slate-950 text-slate-400 h-screen p-4 gap-y-8 fixed font-semibold'>
                     <div className='flex flex-col h-16 items-center justify-center text-4xl text-white'>To-Do List</div>
                     <div className='flex flex-col flex-auto'>
-                        <a href='/' className='flex flex-row p-2 gap-x-3 rounded-md hover:bg-slate-800 hover:text-white'>
+                        <a href="#0" onClick={() => setSelected("All")} className={`flex flex-row p-2 gap-x-3 rounded-md hover:bg-slate-800 hover:text-white ${selected === "All" ? 'bg-slate-800 text-white' : ''}`}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-4" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -278,7 +371,7 @@ export default function Dashboard() {
                             </svg>
                             <div>All</div>
                         </a>
-                        <a href='/' className='flex flex-row p-2 gap-x-3 rounded-md hover:bg-slate-800 hover:text-white'>
+                        <a href='#0' onClick={() => setSelected("Incomplete")} className={`flex flex-row p-2 gap-x-3 rounded-md hover:bg-slate-800 hover:text-white ${selected === "Incomplete" ? 'bg-slate-800 text-white' : ''}`}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-4" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -286,7 +379,7 @@ export default function Dashboard() {
                             </svg>
                             <div>Incomplete</div>
                         </a>
-                        <a href='/' className='flex flex-row p-2 gap-x-3 rounded-md hover:bg-slate-800 hover:text-white'>
+                        <a href='#0' onClick={() => setSelected("Complete")} className={`flex flex-row p-2 gap-x-3 rounded-md hover:bg-slate-800 hover:text-white ${selected === "Complete" ? 'bg-slate-800 text-white' : ''}`}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-4" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -322,9 +415,10 @@ export default function Dashboard() {
 
                     <div id='notes' className='flex flex-1 flex-col'>
 
-                        {notes.map((note, i) => (<NewListItem key={i} KEY={i} note={note} setDelete={setDelete} complete={complete}/>))}
-
-                        {completednote.map((note, i) => (<CompletedListItem key={i} KEY={i} note={note} setDelete={setDelete}/>))}
+                        {selected === "All" && notes.map((note, i) => (<NewListItem openEditor={openEditor} key={i} KEY={i} note={note} setDelete={setDelete} complete={complete}/>))}
+                        {selected === "All" && completednote.map((note, i) => (<CompletedListItem key={i} KEY={i} note={note} setDelete={setDelete}/>))}
+                        {selected === "Incomplete" && notes.map((note, i) => (<NewListItem openEditor={openEditor} key={i} KEY={i} note={note} setDelete={setDelete} complete={complete}/>))}
+                        {selected === "Complete" && completednote.map((note, i) => (<CompletedListItem key={i} KEY={i} note={note} setDelete={setDelete}/>))}
 
                     </div>
                 </div>

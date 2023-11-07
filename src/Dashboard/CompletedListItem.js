@@ -16,15 +16,6 @@ export default function CompletedListItem({ note, setDelete, KEY }) {
                     <div>Added 1 min ago</div>
                 </div>
                 <div className="mt-5 flex">
-                    <span className="hidden sm:block">
-                        <button
-                            type="button"
-                            className="inline-flex items-center rounded-md bg-slate-800 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-700"
-                        >
-                            <PencilIcon className="-ml-0.5 mr-1.5 h-5 w-5 text-white" aria-hidden="true" />
-                            Edit
-                        </button>
-                    </span>
                     <span className="sm:ml-3">
                         <button
                             type="button"
